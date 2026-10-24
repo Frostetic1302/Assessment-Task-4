@@ -80,4 +80,14 @@ public class CherryController : MonoBehaviour
         currentCherry = Instantiate(cherryPrefab, startPosition, Quaternion.identity);
         isMoving = true;
     }
+
+    public void OnCherryDestroyed()
+    {
+        if (currentCherry != null)
+        {
+            Destroy(currentCherry);
+        }
+        currentCherry = null;
+        isMoving = false;
+    }
 }
