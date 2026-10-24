@@ -25,10 +25,20 @@ public class PacStudentController : MonoBehaviour
     public AudioClip walkSound;
     public AudioClip pelletSound;
     public Tilemap[] allTilemaps;
+    public PelletManager pelletManager;
+    public Transform spriteTransform;
+    public ParticleSystem wallParticles;
+    public AudioSource wallAudio;
+    bool hitWall;
+    public AudioClip deathSound;
+    public Vector3 respawnPosition = new Vector3(-3.5f, 2.5f, 0f);
+    public ParticleSystem deathParticles;
 
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        lastInput = Direction.Right;
+        currentInput = Direction.Right;
         UpdateAnimatorDirection(currentInput);
     }
 
@@ -78,6 +88,20 @@ public class PacStudentController : MonoBehaviour
     void TryMove()
     {
         Vector3 nextPosition = GetNextPosition(lastInput);
+
+        if (!IsWalkable(nextPosition))
+        {
+            if (!hitWall)
+            {
+                wallParticles.Play();
+                wallAudio.Play();
+                hitWall = true;
+            }
+        }
+        else
+        {
+            hitWall = false;
+        }
 
         if (IsWalkable(nextPosition))
         {
@@ -132,6 +156,44 @@ public class PacStudentController : MonoBehaviour
                 dustParticles.Play();
             }
         }
+    }
+
+    public void PlayDeathFX()
+    {
+        StopMovementAudio();
+
+        if (animator != null)
+        {
+            animator.SetInteger("Direction", -1);
+            animator.SetTrigger("Death");
+        }
+
+        if (dustParticles != null)
+        {
+            dustParticles.transform.position = transform.position;
+            dustParticles.Play();
+        }
+
+        if (audioSource != null && deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
+
+        if (deathParticles != null)
+        {
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
+        }
+    }
+
+    public void Respawn()
+    {
+        transform.position = respawnPosition;
+        startPosition = respawnPosition;
+        targetPosition = respawnPosition;
+        isMoving = false;
+        lastInput = Direction.Right;
+        currentInput = Direction.Right;
+        UpdateAnimatorDirection(currentInput);
     }
 
     void UpdateMovementAudio()
@@ -189,18 +251,14 @@ public class PacStudentController : MonoBehaviour
     void MoveLerp()
     {
         lerpValue += moveSpeed * Time.deltaTime;
-
-        transform.position = Vector3.Lerp(
-            startPosition,
-            targetPosition,
-            lerpValue
-        );
+        transform.position = Vector3.Lerp(startPosition, targetPosition, lerpValue);
 
         if (lerpValue >= 1f)
         {
             transform.position = targetPosition;
             isMoving = false;
             dustParticles.Stop();
+            pelletManager.EatPellet(spriteTransform.position);
         }
     }
 
@@ -223,19 +281,7 @@ public class PacStudentController : MonoBehaviour
 
     bool IsWalkable(Vector3 position)
     {
-        Collider2D hit = Physics2D.OverlapCircle(position, 0.1f);
-
-        if (hit == null)
-        {
-            return true;
-        }
-
-        if (hit.CompareTag("Wall"))
-        {
-            return false;
-        }
-
-        return true;
+        return !WallManager.instance.IsWall(position);
     }
 
     void UpdateAnimatorDirection(Direction direction)
