@@ -33,6 +33,7 @@ public class PacStudentController : MonoBehaviour
     public AudioClip deathSound;
     public Vector3 respawnPosition = new Vector3(-3.5f, 2.5f, 0f);
     public ParticleSystem deathParticles;
+    public static bool isWaitingForInput = false;
 
     void Start()
     {
@@ -70,23 +71,35 @@ public class PacStudentController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             lastInput = Direction.Up;
+            if (currentInput == Direction.None) currentInput = Direction.Up;
+            isWaitingForInput = false;
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             lastInput = Direction.Down;
+            if (currentInput == Direction.None) currentInput = Direction.Down;
+            isWaitingForInput = false;
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
             lastInput = Direction.Left;
+            if (currentInput == Direction.None) currentInput = Direction.Left;
+            isWaitingForInput = false;
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             lastInput = Direction.Right;
+            if (currentInput == Direction.None) currentInput = Direction.Right;
+            isWaitingForInput = false;
         }
     }
 
     void TryMove()
     {
+        if (lastInput == Direction.None)
+        {
+            return;
+        }
         Vector3 nextPosition = GetNextPosition(lastInput);
 
         if (!IsWalkable(nextPosition))
@@ -191,9 +204,16 @@ public class PacStudentController : MonoBehaviour
         startPosition = respawnPosition;
         targetPosition = respawnPosition;
         isMoving = false;
-        lastInput = Direction.Right;
-        currentInput = Direction.Right;
+        lastInput = Direction.None;
+        currentInput = Direction.None;
         UpdateAnimatorDirection(currentInput);
+        isWaitingForInput = true;
+
+        GhostController[] ghosts = FindObjectsByType<GhostController>();
+        foreach (GhostController ghost in ghosts)
+        {
+            ghost.ResetToInitialState();
+        }
     }
 
     void UpdateMovementAudio()
@@ -280,9 +300,19 @@ public class PacStudentController : MonoBehaviour
     }
 
     bool IsWalkable(Vector3 position)
+{
+    if (WallManager.instance.IsWall(position))
     {
-        return !WallManager.instance.IsWall(position);
+        return false;
     }
+
+    if (WallManager.instance.IsGhostWall(position))
+    {
+        return false;
+    }
+
+    return true;
+}
 
     void UpdateAnimatorDirection(Direction direction)
     {
@@ -303,5 +333,13 @@ public class PacStudentController : MonoBehaviour
                 break;
         }
         animator.SetInteger("Direction", directionValue);
+    }
+
+    public void ContinueTeleport(Transform destination)
+    {
+        Vector3 offset = destination.position - transform.position;
+        transform.position += offset;
+        startPosition += offset;
+        targetPosition += offset;
     }
 }

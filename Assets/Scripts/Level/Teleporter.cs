@@ -9,9 +9,13 @@ public class Teleporter : MonoBehaviour
     {
         if (collision.CompareTag("Player") && canTeleport)
         {
-            collision.transform.position = destination.position;
-            canTeleport = false;
-            Invoke(nameof(ResetTeleport), 0.2f);
+            PacStudentController pac = collision.GetComponentInParent<PacStudentController>();
+            if (pac != null && destination != null)
+            {
+                pac.ContinueTeleport(destination);
+                canTeleport = false;
+                Invoke(nameof(ResetTeleport), 0.2f);
+            }
         }
     }
 

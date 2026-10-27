@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 128511576}
   - component: {fileID: 128511578}
   - component: {fileID: 128511577}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 178037985}
   - component: {fileID: 178037986}
   - component: {fileID: 178037987}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost_Red
   m_TagString: Ghost
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ Transform:
   m_GameObject: {fileID: 178037982}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.15, y: -12.65, z: 0}
+  m_LocalPosition: {x: 8.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -676,6 +676,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf0573eafa4deb428fc2036f8620a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostCollision
+  ghostType: 1
+  moveSpeed: 4.5
+  teleporterEntranceTiles:
+  - {x: -4.5, y: -10.5, z: 0}
+  - {x: 22.5, y: -10.5, z: 0}
+  ghost4TurnPoints: []
+  ghost4TurnDirections: 
 --- !u!61 &178037987
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -749,7 +756,7 @@ Transform:
   m_GameObject: {fileID: 185712320}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.27, y: -0.77, z: 0}
+  m_LocalPosition: {x: 22.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13628,6 +13635,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 452495205}
   m_CullTransparentMesh: 1
+--- !u!1 &463703609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 463703610}
+  m_Layer: 0
+  m_Name: Waypoint4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &463703610
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463703609}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.5, y: -19.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691438915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -13799,9 +13837,13 @@ MonoBehaviour:
   bottomLeft: {fileID: 199799820}
   bottomRight: {fileID: 668835927}
   wallTiles:
-  - {fileID: 11400000, guid: cc922239f61c69543a63969be8d91f3b, type: 2}
+  - {fileID: 11400000, guid: 3737607fb4f28b24280fbd860e2d1721, type: 2}
   - {fileID: 11400000, guid: f8d2d0e1ebb45214cb79c193503a5589, type: 2}
   - {fileID: 11400000, guid: 09b4f57c71ab5ab4faa6a56a7aeebe60, type: 2}
+  - {fileID: 11400000, guid: 0f125528fa4a7e6489e6c2f700bd8928, type: 2}
+  - {fileID: 11400000, guid: d3b77d670630c0542a457ba9b684f92a, type: 2}
+  ghostWallTile: {fileID: 11400000, guid: cc922239f61c69543a63969be8d91f3b, type: 2}
+  outerWallTiles:
   - {fileID: 11400000, guid: 0f125528fa4a7e6489e6c2f700bd8928, type: 2}
   - {fileID: 11400000, guid: d3b77d670630c0542a457ba9b684f92a, type: 2}
   - {fileID: 11400000, guid: 3737607fb4f28b24280fbd860e2d1721, type: 2}
@@ -13832,7 +13874,7 @@ GameObject:
   - component: {fileID: 561434407}
   - component: {fileID: 561434406}
   - component: {fileID: 561434405}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost3Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14078,7 +14120,7 @@ GameObject:
   - component: {fileID: 626025736}
   - component: {fileID: 626025738}
   - component: {fileID: 626025737}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16445,6 +16487,41 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &691438914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 691438915}
+  m_Layer: 0
+  m_Name: Ghost4Waypoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &691438915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691438914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1250655635}
+  - {fileID: 1468726965}
+  - {fileID: 758027801}
+  - {fileID: 463703610}
+  m_Father: {fileID: 1962429749}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &704405434
 GameObject:
   m_ObjectHideFlags: 0
@@ -16785,7 +16862,7 @@ GameObject:
   - component: {fileID: 707336017}
   - component: {fileID: 707336019}
   - component: {fileID: 707336018}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16911,6 +16988,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707336016}
   m_CullTransparentMesh: 1
+--- !u!1 &758027800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 758027801}
+  m_Layer: 0
+  m_Name: Waypoint3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &758027801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758027800}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.5, y: -19.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691438915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &802963719
 GameObject:
   m_ObjectHideFlags: 0
@@ -17049,7 +17157,7 @@ GameObject:
   - component: {fileID: 902315913}
   - component: {fileID: 902315915}
   - component: {fileID: 902315914}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17627,7 +17735,7 @@ GameObject:
   - component: {fileID: 1035061989}
   - component: {fileID: 1035061988}
   - component: {fileID: 1035061987}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost1Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20126,7 +20234,7 @@ Transform:
   m_GameObject: {fileID: 1068039975}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.73, y: -0.77, z: 0}
+  m_LocalPosition: {x: -4.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20673,7 +20781,7 @@ GameObject:
   - component: {fileID: 1112762749}
   - component: {fileID: 1112762748}
   - component: {fileID: 1112762747}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost4Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20939,6 +21047,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1250655634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1250655635}
+  m_Layer: 0
+  m_Name: Waypoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1250655635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250655634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.5, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691438915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1280513256
 GameObject:
   m_ObjectHideFlags: 0
@@ -21020,7 +21159,7 @@ Transform:
   m_GameObject: {fileID: 1299370860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.6328, y: 2.05189, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21390,7 +21529,7 @@ GameObject:
   - component: {fileID: 1370419029}
   - component: {fileID: 1370419030}
   - component: {fileID: 1370419031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost_Blue
   m_TagString: Ghost
   m_Icon: {fileID: 0}
@@ -21406,7 +21545,7 @@ Transform:
   m_GameObject: {fileID: 1370419026}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.15, y: -9.5, z: 0}
+  m_LocalPosition: {x: 7.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21506,6 +21645,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf0573eafa4deb428fc2036f8620a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostCollision
+  ghostType: 0
+  moveSpeed: 4.5
+  teleporterEntranceTiles:
+  - {x: -4.5, y: -10.5, z: 0}
+  - {x: 22.5, y: -10.5, z: 0}
+  ghost4TurnPoints: []
+  ghost4TurnDirections: 
 --- !u!61 &1370419031
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21596,6 +21742,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1468726964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468726965}
+  m_Layer: 0
+  m_Name: Waypoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1468726965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468726964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.5, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 691438915}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1480528014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21643,7 +21820,7 @@ GameObject:
   - component: {fileID: 1529488587}
   - component: {fileID: 1529488588}
   - component: {fileID: 1529488589}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost_Pink
   m_TagString: Ghost
   m_Icon: {fileID: 0}
@@ -21659,7 +21836,7 @@ Transform:
   m_GameObject: {fileID: 1529488584}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.15, y: -12.65, z: 0}
+  m_LocalPosition: {x: 9.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21759,6 +21936,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf0573eafa4deb428fc2036f8620a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostCollision
+  ghostType: 2
+  moveSpeed: 4.5
+  teleporterEntranceTiles:
+  - {x: -4.5, y: -10.5, z: 0}
+  - {x: 22.5, y: -10.5, z: 0}
+  ghost4TurnPoints: []
+  ghost4TurnDirections: 
 --- !u!61 &1529488589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21967,7 +22151,7 @@ Transform:
   m_GameObject: {fileID: 1589452912}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.2277, y: -9.72533, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21987,7 +22171,7 @@ GameObject:
   - component: {fileID: 1592346494}
   - component: {fileID: 1592346493}
   - component: {fileID: 1592346492}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost2Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24643,7 +24827,7 @@ GameObject:
   - component: {fileID: 1678323129}
   - component: {fileID: 1678323130}
   - component: {fileID: 1678323131}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ghost_Yellow
   m_TagString: Ghost
   m_Icon: {fileID: 0}
@@ -24659,7 +24843,7 @@ Transform:
   m_GameObject: {fileID: 1678323126}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.12, y: -12.65, z: 0}
+  m_LocalPosition: {x: 10.5, y: -10.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24759,6 +24943,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf0573eafa4deb428fc2036f8620a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostCollision
+  ghostType: 3
+  moveSpeed: 4.5
+  teleporterEntranceTiles:
+  - {x: -4.5, y: -10.5, z: 0}
+  - {x: 22.5, y: -10.5, z: 0}
+  ghost4TurnPoints:
+  - {fileID: 1250655635}
+  - {fileID: 1468726965}
+  - {fileID: 758027801}
+  - {fileID: 463703610}
+  ghost4TurnDirections: 03000000000000000100000002000000
 --- !u!61 &1678323131
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25390,6 +25585,7 @@ Transform:
   - {fileID: 199799818}
   - {fileID: 1053385110}
   - {fileID: 668835925}
+  - {fileID: 691438915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1990286325

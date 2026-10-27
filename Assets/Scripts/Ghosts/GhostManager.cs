@@ -56,17 +56,16 @@ public class GhostManager : MonoBehaviour
         scaredMode = true;
         scaredTimer = 10f;
         recoveringTriggered = false;
-
         ghostTimerText.gameObject.SetActive(true);
 
         foreach (Animator animator in ghostAnimators)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead Blend"))
-            {
-                animator.SetTrigger("Scared");
-            }
+            GhostController ghost = animator.GetComponentInParent<GhostController>();
+            animator.ResetTrigger("Normal");
+            animator.ResetTrigger("Recovering");
+            animator.ResetTrigger("Dead");
+            animator.SetTrigger("Scared");
         }
-
         backgroundMusic.clip = scaredMusic;
         backgroundMusic.Play();
     }
@@ -75,10 +74,20 @@ public class GhostManager : MonoBehaviour
     {
         foreach (Animator animator in ghostAnimators)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Dead Blend"))
+            if (animator == null)
             {
-                animator.SetTrigger("Recovering");
+                continue;
             }
+            GhostController ghost = animator.GetComponentInParent<GhostController>();
+
+            if (ghost != null && ghost.IsEaten())
+            {
+                continue;
+            }
+            animator.ResetTrigger("Scared");
+            animator.ResetTrigger("Normal");
+            animator.ResetTrigger("Dead");
+            animator.SetTrigger("Recovering");
         }
     }
 
@@ -125,6 +134,10 @@ public class GhostManager : MonoBehaviour
 
     public void PlayDeadMusic()
     {
+        if (backgroundMusic.isPlaying && backgroundMusic.clip == deadMusic)
+        {
+            return;
+        }
         backgroundMusic.clip = deadMusic;
         backgroundMusic.Play();
     }
