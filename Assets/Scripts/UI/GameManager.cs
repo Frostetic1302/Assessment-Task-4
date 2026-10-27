@@ -44,16 +44,27 @@ public class GameManager : MonoBehaviour
         {
             countdownText.gameObject.SetActive(true);
         }
-        PacStudentController pacStudent = FindAnyObjectByType<PacStudentController>();
 
+        PacStudentController pacStudent = FindAnyObjectByType<PacStudentController>();
         if (pacStudent != null)
         {
             pacStudent.enabled = false;
         }
-        StartCoroutine(CountdownRoutine(pacStudent));
+
+        GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+        foreach (var ghost in ghosts)
+        {
+            GhostController ghostController = ghost.GetComponent<GhostController>();
+            if (ghostController != null)
+            {
+                ghostController.enabled = false;
+            }
+        }
+
+        StartCoroutine(CountdownRoutine(pacStudent, ghosts));
     }
 
-    IEnumerator CountdownRoutine(PacStudentController pacStudent)
+    IEnumerator CountdownRoutine(PacStudentController pacStudent, GameObject[] ghosts)
     {
         string[] countdown = { "3", "2", "1", "GO!" };
         foreach (string number in countdown)
@@ -78,6 +89,14 @@ public class GameManager : MonoBehaviour
             pacStudent.enabled = true;
         }
 
+        foreach (var ghost in ghosts)
+        {
+            GhostController ghostController = ghost.GetComponent<GhostController>();
+            if (ghostController != null)
+            {
+                ghostController.enabled = true;
+            }
+        }
         StartGame();
     }
 
@@ -169,27 +188,46 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitForPlayerInput(PacStudentController pacStudent)
     {
-        bool inputReceived = false;
-
         if (pacStudent != null)
         {
             pacStudent.enabled = false;
         }
 
-        while (!inputReceived)
+        while (true)
         {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+            PacStudentController.Direction direction = PacStudentController.Direction.None;
+
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                inputReceived = true;
+                direction = PacStudentController.Direction.Up;
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                direction = PacStudentController.Direction.Down;
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                direction = PacStudentController.Direction.Left;
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                direction = PacStudentController.Direction.Right;
+            }
+
+            if (direction != PacStudentController.Direction.None)
+            {
+                if (pacStudent != null)
+                {
+                    pacStudent.lastInput = direction;
+                    pacStudent.currentInput = direction;
+                    PacStudentController.isWaitingForInput = false;
+                    pacStudent.enabled = true;
+                }
+                StartGame();
+                yield break;
             }
             yield return null;
         }
-
-        if (pacStudent != null)
-        {
-            pacStudent.enabled = true;
-        }
-        StartGame();
     }
 
     public void LoseLife()
@@ -205,14 +243,25 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverRoutine()
     {
         StopGame();
+        PacStudentController pacStudent = FindAnyObjectByType<PacStudentController>();
+        if (pacStudent != null)
+        {
+            pacStudent.enabled = false;
+        }
 
+        GameObject[] ghosts = GameObject.FindGameObjectsWithTag("Ghost");
+        foreach (var ghost in ghosts)
+        {
+            GhostController ghostController = ghost.GetComponent<GhostController>();
+            if (ghostController != null)
+            {
+                ghostController.enabled = false;
+            }
+        }
         blocker.SetActive(true);
         gameOverText.SetActive(true);
-
         yield return new WaitForSeconds(3);
-
         SaveHighScore();
-
         SceneManager.LoadScene("StartScene");
     }
 
