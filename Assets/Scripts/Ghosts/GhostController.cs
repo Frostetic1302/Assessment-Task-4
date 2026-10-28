@@ -36,9 +36,12 @@ public class GhostController : MonoBehaviour
     public Vector3[] teleporterEntranceTiles;
     public Transform[] ghost4TurnPoints;
     public Direction[] ghost4TurnDirections;
+    public float adrenalineSpeedIncrease = 0.25f;
+    private float normalMoveSpeed;
 
     private void Start()
     {
+        normalMoveSpeed = moveSpeed;
         animator = GetComponent<Animator>();
         initialPosition = transform.position;
         player = FindAnyObjectByType<PacStudentController>();
@@ -313,6 +316,11 @@ public class GhostController : MonoBehaviour
     public bool IsEaten()
     {
         return isEaten;
+    }
+
+    public void SetAdrenalineLevel(int level)
+    {
+        moveSpeed = normalMoveSpeed + (adrenalineSpeedIncrease * level);
     }
 
     bool IsTeleporterEntrance(Vector3 position)

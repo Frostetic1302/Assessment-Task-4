@@ -34,9 +34,12 @@ public class PacStudentController : MonoBehaviour
     public Vector3 respawnPosition = new Vector3(-3.5f, 2.5f, 0f);
     public ParticleSystem deathParticles;
     public static bool isWaitingForInput = false;
+    public float adrenalineSpeedIncrease = 0.5f;
+    private float normalMoveSpeed;
 
     void Start()
     {
+        normalMoveSpeed = moveSpeed;
         animator = GetComponentInChildren<Animator>();
         lastInput = Direction.Right;
         currentInput = Direction.Right;
@@ -341,5 +344,10 @@ public class PacStudentController : MonoBehaviour
         transform.position += offset;
         startPosition += offset;
         targetPosition += offset;
+    }
+
+    public void SetAdrenalineLevel(int level)
+    {
+        moveSpeed = normalMoveSpeed + (adrenalineSpeedIncrease * level);
     }
 }

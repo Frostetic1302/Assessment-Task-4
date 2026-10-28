@@ -13,6 +13,12 @@ public class GhostManager : MonoBehaviour
     private float scaredTimer;
     private bool scaredMode;
     private bool recoveringTriggered;
+    public TMP_Text adrenalineLevelLabel;
+    public TMP_Text adrenalineNumberText;
+    public int maxAdrenalineLevel = 4;
+    public float adrenalinePitchIncrease = 0.08f;
+    private int adrenalineLevel;
+    private float normalMusicPitch = 1f;
 
     void Awake()
     {
@@ -21,7 +27,28 @@ public class GhostManager : MonoBehaviour
 
     void Start()
     {
-        ghostTimerText.gameObject.SetActive(false);
+        if (ghostTimerText != null)
+        {
+            ghostTimerText.gameObject.SetActive(false);
+        }
+
+        if (backgroundMusic != null)
+        {
+            normalMusicPitch = backgroundMusic.pitch;
+        }
+
+        bool adrenalineMode = GameManager.instance != null && GameManager.instance.levelNumber == 2;
+
+        if (adrenalineLevelLabel != null)
+        {
+            adrenalineLevelLabel.gameObject.SetActive(adrenalineMode);
+        }
+
+        if (adrenalineNumberText != null)
+        {
+            adrenalineNumberText.gameObject.SetActive(adrenalineMode);
+        }
+        UpdateAdrenalineText();
     }
 
     void Update()
@@ -53,6 +80,7 @@ public class GhostManager : MonoBehaviour
 
     public void StartScaredMode()
     {
+        IncreaseAdrenaline();
         scaredMode = true;
         scaredTimer = 10f;
         recoveringTriggered = false;
@@ -68,6 +96,59 @@ public class GhostManager : MonoBehaviour
         }
         backgroundMusic.clip = scaredMusic;
         backgroundMusic.Play();
+    }
+
+    void IncreaseAdrenaline()
+    {
+        if (GameManager.instance == null ||
+            GameManager.instance.levelNumber != 2)
+        {
+            return;
+        }
+
+        if (adrenalineLevel >= maxAdrenalineLevel)
+        {
+            return;
+        }
+        adrenalineLevel++;
+
+        PacStudentController player = FindAnyObjectByType<PacStudentController>();
+
+        if (player != null)
+        {
+            player.SetAdrenalineLevel(adrenalineLevel);
+        }
+
+        if (ghostAnimators != null)
+        {
+            foreach (Animator animator in ghostAnimators)
+            {
+                if (animator == null)
+                {
+                    continue;
+                }
+                GhostController ghost = animator.GetComponentInParent<GhostController>();
+
+                if (ghost != null)
+                {
+                    ghost.SetAdrenalineLevel(adrenalineLevel);
+                }
+            }
+        }
+
+        if (backgroundMusic != null)
+        {
+            backgroundMusic.pitch = normalMusicPitch + (adrenalineLevel * adrenalinePitchIncrease);
+        }
+        UpdateAdrenalineText();
+    }
+
+    void UpdateAdrenalineText()
+    {
+        if (adrenalineNumberText != null)
+        {
+            adrenalineNumberText.text = adrenalineLevel.ToString();
+        }
     }
 
     void SetRecoveringState()
