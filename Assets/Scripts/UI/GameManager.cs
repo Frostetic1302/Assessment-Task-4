@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     public GameObject blocker;
     public float scaredTimer;
     public TMP_Text countdownText;
+    public int levelNumber = 1;
+    public TMP_Text adrenalineLevelLabel;
+    public TMP_Text adrenalineNumberText;
 
     void Awake()
     {
@@ -39,6 +42,18 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        bool adrenalineMode = levelNumber == 2;
+        if (adrenalineLevelLabel != null)
+        {
+            adrenalineLevelLabel.gameObject.SetActive(adrenalineMode);
+        }
+
+        if (adrenalineNumberText != null)
+        {
+            adrenalineNumberText.gameObject.SetActive(adrenalineMode);
+            adrenalineNumberText.text = "0";
+        }
+
         StopGame();
         if (countdownText != null)
         {
@@ -62,6 +77,14 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine(CountdownRoutine(pacStudent, ghosts));
+    }
+
+    public void UpdateAdrenalineText(int level)
+    {
+        if (levelNumber == 2 && adrenalineNumberText != null)
+        {
+            adrenalineNumberText.text = level.ToString();
+        }
     }
 
     IEnumerator CountdownRoutine(PacStudentController pacStudent, GameObject[] ghosts)
@@ -267,13 +290,25 @@ public class GameManager : MonoBehaviour
 
     void SaveHighScore()
     {
-        int highScore =
-            PlayerPrefs.GetInt("HighScore", 0);
+        string highScoreKey;
+        string bestTimeKey;
+
+        if (levelNumber == 2)
+        {
+            highScoreKey = "HighScoreLevel2";
+            bestTimeKey = "BestTimeLevel2";
+        }
+        else
+        {
+            highScoreKey = "HighScore";
+            bestTimeKey = "BestTime";
+        }
+        int highScore = PlayerPrefs.GetInt(highScoreKey, 0);
 
         if (score > highScore)
         {
-            PlayerPrefs.SetInt("HighScore", score);
-            PlayerPrefs.SetFloat("BestTime", gameTime);
+            PlayerPrefs.SetInt(highScoreKey, score);
+            PlayerPrefs.SetFloat(bestTimeKey, gameTime);
             PlayerPrefs.Save();
         }
     }

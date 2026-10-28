@@ -460,6 +460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StartSceneHighScore
   highScoreText: {fileID: 1985890982}
   timeText: {fileID: 2057046743}
+  level2HighScoreText: {fileID: 103402069}
+  level2TimeText: {fileID: 1037575742}
 --- !u!4 &173054466
 Transform:
   m_ObjectHideFlags: 0
